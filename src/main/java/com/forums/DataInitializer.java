@@ -12,10 +12,10 @@ import org.springframework.stereotype.Component;
 public class DataInitializer implements CommandLineRunner {
 
   @Autowired
-  PostRepository postRepository;
+  private PostRepository postRepository;
 
   @Autowired
-  CommentRepository commentRepository;
+  private CommentRepository commentRepository;
 
   @Override
   public void run(String... args) {
