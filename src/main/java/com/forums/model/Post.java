@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
-@Table(name="Posts")
+@Table(name = "Posts")
 public class Post {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,23 +19,22 @@ public class Post {
   @NotNull
   private Long postId;
 
-  @Column(name="postTitle")
-  private String title;
+  @Column(name = "postTitle")
+  private String postTitle;
 
-  @Column(name="creationDate")
+  @Column(name = "creationDate")
   @UpdateTimestamp
-  private Date creationDateTime;
+  private Date creationDate;
 
   public Long getPostId() {
     return postId;
   }
 
-  public String getTitle() {
-    return title;
+  public String getPostTitle() {
+    return postTitle;
   }
 
-  public void setTitle(String title) {
-    this.title = title;
+  public void setPostTitle(String postTitle) {
+    this.postTitle = postTitle;
   }
-
 }
