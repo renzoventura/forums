@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class CommentController {
 
   @Autowired
-  CommentRepository commentRepository;
+  private CommentRepository commentRepository;
 
   @Autowired
-  PostRepository postRepository;
+  private PostRepository postRepository;
 
   @GetMapping("post/{postId}/comments")
   private ArrayList<Comment> getCommentsByPostId(@PathVariable long postId) {
@@ -43,8 +43,8 @@ public class CommentController {
   }
 
   @DeleteMapping("/{id}")
-  private void deleteComment(@PathVariable long commnetId){
-    commentRepository.deleteById(commnetId);
+  private void deleteComment(@PathVariable long commentId){
+    commentRepository.deleteById(commentId);
   }
 
 }

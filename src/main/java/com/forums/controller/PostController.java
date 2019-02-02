@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class PostController {
 
   @Autowired
-  PostRepository postRepository;
+  private PostRepository postRepository;
 
   @GetMapping
   private Iterable<Post> getAllPosts(){
@@ -27,8 +27,7 @@ public class PostController {
   @GetMapping("/{id}")
   private Post getPostById(@PathVariable Long id){
     Optional<Post> optionalPost = postRepository.findById(id);
-    Post foundPost = optionalPost.get();
-    return foundPost;
+    return optionalPost.get();
   }
 
   @PostMapping
@@ -39,8 +38,7 @@ public class PostController {
   @DeleteMapping("/{id}")
   private void deletePostById(@PathVariable Long id){
     Optional<Post> optionalPost = postRepository.findById(id);
-    Post foundPost = optionalPost.get();
-    postRepository.delete(foundPost);
+    postRepository.delete(optionalPost.get());
   }
 
 }
