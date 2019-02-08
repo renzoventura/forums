@@ -1,9 +1,12 @@
 package com.forums.controller;
 
 import com.forums.model.Post;
+import com.forums.repository.AccountRepository;
 import com.forums.repository.PostRepository;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +22,9 @@ public class PostController {
   @Autowired
   private PostRepository postRepository;
 
+  @Autowired
+  private AccountRepository accountRepository;
+
   @GetMapping
   private Iterable<Post> getAllPosts(){
     return postRepository.findAll();
@@ -31,7 +37,8 @@ public class PostController {
   }
 
   @PostMapping
-  private void insertPost(@RequestBody Post post){
+  private void insertPost(@RequestBody Post post, @AuthenticationPrincipal UserDetails userDetails){
+    post.setAccount(accountRepository.findByUsername(userDetails.getUsername()).get());
     postRepository.save(post);
   }
 

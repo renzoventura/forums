@@ -2,10 +2,13 @@ package com.forums.controller;
 
 import com.forums.model.Comment;
 import com.forums.model.Post;
+import com.forums.repository.AccountRepository;
 import com.forums.repository.CommentRepository;
 import com.forums.repository.PostRepository;
 import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +25,9 @@ public class CommentController {
   @Autowired
   private PostRepository postRepository;
 
+  @Autowired
+  private AccountRepository accountRepository;
+
   @GetMapping("post/{postId}/comments")
   private ArrayList<Comment> getCommentsByPostId(@PathVariable long postId) {
     ArrayList<Comment> commentList = new ArrayList<Comment>();
@@ -36,9 +42,11 @@ public class CommentController {
   }
 
   @PostMapping("post/{postId}/comments")
-  private void insertComment(@PathVariable long postId, @RequestBody Comment comment){
+  private void insertComment(@PathVariable long postId, @RequestBody Comment comment, @AuthenticationPrincipal
+      UserDetails userDetails){
     Post foundPost = postRepository.findById(postId).get();
     comment.setPost(foundPost);
+    comment.setAccount(accountRepository.findByUsername(userDetails.getUsername()).get());
     commentRepository.save(comment);
   }
 
