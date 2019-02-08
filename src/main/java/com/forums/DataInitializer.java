@@ -1,11 +1,15 @@
 package com.forums;
 
+import com.forums.model.Account;
 import com.forums.model.Comment;
 import com.forums.model.Post;
+import com.forums.repository.AccountRepository;
 import com.forums.repository.CommentRepository;
 import com.forums.repository.PostRepository;
+import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -16,6 +20,14 @@ public class DataInitializer implements CommandLineRunner {
 
   @Autowired
   private CommentRepository commentRepository;
+
+
+  @Autowired
+  AccountRepository accountRepository;
+
+  @Autowired
+  PasswordEncoder passwordEncoder;
+
 
   @Override
   public void run(String... args) {
@@ -42,5 +54,21 @@ public class DataInitializer implements CommandLineRunner {
     commentRepository.save(comment1);
     commentRepository.save(comment2);
     commentRepository.save(comment3);
+
+
+    Account user = new Account();
+    user.setUsername("user");
+    user.setPassword(this.passwordEncoder.encode("password"));
+    user.setRoles(Arrays.asList("ROLE_USER"));
+
+    Account admin = new Account();
+    admin.setUsername("admin");
+    admin.setPassword(this.passwordEncoder.encode("password"));
+    admin.setRoles(Arrays.asList("ROLE_USER", "ROLE_ADMIN"));
+
+    this.accountRepository.save(user);
+    this.accountRepository.save(admin);
+
+
   }
 }
