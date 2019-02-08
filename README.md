@@ -22,8 +22,8 @@ URI|REQUEST|DESCRIPTION|
 /comment|DEL| Delete a comment by
 *AUTH*
 /auth/signin|POST| generate a token from credentials in request body
-/auth/user/signup|POST| insert user details with USER_ROLE
-/auth/admin/signup|POST| insert user details with USER_ROLE and USER_ADMIN
+/auth/user/signup|POST| insert user details with ROLE_USER
+/auth/admin/signup|POST| insert user details with ROLE_USER and ROLE_ADMIN
 /auth/me|GET| Retrive user details from bearer token
 
 
