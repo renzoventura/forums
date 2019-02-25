@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +30,7 @@ public class CommentController {
   private AccountRepository accountRepository;
 
   @GetMapping("post/{postId}/comments")
+  @CrossOrigin(origins = "http://localhost:4200")
   private ArrayList<Comment> getCommentsByPostId(@PathVariable long postId) {
     ArrayList<Comment> commentList = new ArrayList<Comment>();
     Post post = postRepository.findById(postId).get();
@@ -42,6 +44,7 @@ public class CommentController {
   }
 
   @PostMapping("post/{postId}/comments")
+  @CrossOrigin(origins = "http://localhost:4200")
   private void insertComment(@PathVariable long postId, @RequestBody Comment comment, @AuthenticationPrincipal
       UserDetails userDetails){
     Post foundPost = postRepository.findById(postId).get();
@@ -51,6 +54,7 @@ public class CommentController {
   }
 
   @DeleteMapping("/{id}")
+  @CrossOrigin(origins = "http://localhost:4200")
   private void deleteComment(@PathVariable long commentId){
     commentRepository.deleteById(commentId);
   }
