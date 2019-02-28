@@ -27,6 +27,7 @@ public class PostController {
   private AccountRepository accountRepository;
 
   @GetMapping
+  @CrossOrigin(origins = "http://localhost:4200")
   private Iterable<Post> getAllPosts(){
     return postRepository.findAll();
   }
