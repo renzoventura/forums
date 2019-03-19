@@ -2,6 +2,8 @@ package com.forums.model;
 
 import static java.util.stream.Collectors.toList;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -19,6 +21,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class Account implements UserDetails {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,19 +32,23 @@ public class Account implements UserDetails {
   private String username;
 
   @NotEmpty
+  @JsonIgnore
   private String password;
-
-  public List<String> getRoles() {
-    return roles;
-  }
 
   @ElementCollection(fetch = FetchType.EAGER)
   @Builder.Default
+  @JsonIgnore
   private List<String> roles = new ArrayList<>();
 
   @Override
+  @JsonIgnore
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return this.roles.stream().map(SimpleGrantedAuthority::new).collect(toList());
+  }
+
+  @JsonIgnore
+  public List<String> getRoles() {
+    return roles;
   }
 
   @Override
@@ -55,21 +62,25 @@ public class Account implements UserDetails {
   }
 
   @Override
+  @JsonIgnore
   public boolean isAccountNonExpired() {
     return true;
   }
 
   @Override
+  @JsonIgnore
   public boolean isAccountNonLocked() {
     return true;
   }
 
   @Override
+  @JsonIgnore
   public boolean isCredentialsNonExpired() {
     return true;
   }
 
   @Override
+  @JsonIgnore
   public boolean isEnabled() {
     return true;
   }
