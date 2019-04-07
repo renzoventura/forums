@@ -35,7 +35,6 @@ public class Comment {
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "account_id", nullable = false)
   @OnDelete(action = OnDeleteAction.CASCADE)
-  @JsonIgnore
   private Account account;
 
   public Account getAccount() {
@@ -61,4 +60,9 @@ public class Comment {
   public void setCommentDescription(String commentDescription) {
     this.commentDescription = commentDescription;
   }
+
+  public Date getCreationDateTime() {
+    return creationDateTime;
+  }
+
 }

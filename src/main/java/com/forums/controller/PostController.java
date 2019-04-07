@@ -1,10 +1,13 @@
 package com.forums.controller;
 
+import static org.springframework.http.ResponseEntity.badRequest;
+import static org.springframework.http.ResponseEntity.ok;
+
 import com.forums.model.Post;
 import com.forums.repository.AccountRepository;
 import com.forums.repository.PostRepository;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -34,23 +37,38 @@ public class PostController {
 
   @GetMapping("/{id}")
   @CrossOrigin(origins = "http://localhost:4200")
-  private Post getPostById(@PathVariable Long id){
-    Optional<Post> optionalPost = postRepository.findById(id);
-    return optionalPost.get();
+  private ResponseEntity getPostById(@PathVariable Long id){
+    if (!postRepository.findById(id).isPresent()){
+      return badRequest().body("Post cannot be found!");
+    }
+    return ok(postRepository.findById(id).get());
   }
 
   @PostMapping
   @CrossOrigin(origins = "http://localhost:4200")
-  private void insertPost(@RequestBody Post post, @AuthenticationPrincipal UserDetails userDetails){
-    post.setAccount(accountRepository.findByUsername(userDetails.getUsername()).get());
-    postRepository.save(post);
+  private ResponseEntity insertPost(@RequestBody Post post, @AuthenticationPrincipal UserDetails userDetails){
+    try {
+      if (post.getPostTitle().isEmpty() ||  post.getDescription().isEmpty()){
+        return badRequest().body("A Post must have a title and description.");
+      }
+      post.setAccount(accountRepository.findByUsername(userDetails.getUsername()).get());
+      postRepository.save(post);
+      return ok(post);
+    } catch (Exception e){
+      return badRequest().body(e);
+    }
+
   }
 
   @DeleteMapping("/{id}")
   @CrossOrigin(origins = "http://localhost:4200")
-  private void deletePostById(@PathVariable Long id){
-    Optional<Post> optionalPost = postRepository.findById(id);
-    postRepository.delete(optionalPost.get());
+  private ResponseEntity deletePostById(@PathVariable Long id){
+    if (postRepository.findById(id).isPresent()){
+      postRepository.delete(postRepository.findById(id).get());
+      return ok("Post deleted!");
+    } else {
+      return badRequest().body("The post you're trying to delete does not exist.");
+    }
   }
 
 }
