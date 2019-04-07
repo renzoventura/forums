@@ -1,5 +1,5 @@
 # Forums
-A FullStack project made with Spring boot, JPA, Hibernate and Spring Security for backend, Angular 7 for Frontend. Designed to be a clone of generic forums eg. Reddit Facebook etc
+The backend part of my project made with Spring boot, JPA, Hibernate and Spring Security for backend. Designed to be a clone of generic forums eg. Reddit Facebook etc
 
 # Features
 * CRUD Restful api/service 
